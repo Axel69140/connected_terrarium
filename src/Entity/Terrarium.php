@@ -15,9 +15,6 @@ class Terrarium
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?float $luminosityLevel = null;
-
-    #[ORM\Column]
     private ?float $minLuminosityLevel = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -42,18 +39,6 @@ class Terrarium
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getLuminosityLevel(): ?float
-    {
-        return $this->luminosityLevel;
-    }
-
-    public function setLuminosityLevel(float $luminosityLevel): self
-    {
-        $this->luminosityLevel = $luminosityLevel;
-
-        return $this;
     }
 
     public function getMinLuminosityLevel(): ?float

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Terrarium{% endblock %}
+
+{% block body %}
+    <h1>Create new Terrarium</h1>
+
+    {{ include('terrarium/_form.html.twig') }}
+
+    <a href="{{ path('app_terrarium_index') }}">back to list</a>
+{% endblock %}

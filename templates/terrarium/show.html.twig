@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Terrarium{% endblock %}
+
+{% block body %}
+    <h1>Terrarium</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ terrarium.id }}</td>
+            </tr>
+            <tr>
+                <th>LuminosityLevel</th>
+                <td>{{ terrarium.luminosityLevel }}</td>
+            </tr>
+            <tr>
+                <th>MinLuminosityLevel</th>
+                <td>{{ terrarium.minLuminosityLevel }}</td>
+            </tr>
+            <tr>
+                <th>NightHour</th>
+                <td>{{ terrarium.nightHour ? terrarium.nightHour|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DayHour</th>
+                <td>{{ terrarium.dayHour ? terrarium.dayHour|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ terrarium.name }}</td>
+            </tr>
+            <tr>
+                <th>Specimen</th>
+                <td>{{ terrarium.specimen }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_terrarium_index') }}">back to list</a>
+
+    <a href="{{ path('app_terrarium_edit', {'id': terrarium.id}) }}">edit</a>
+
+    {{ include('terrarium/_delete_form.html.twig') }}
+{% endblock %}

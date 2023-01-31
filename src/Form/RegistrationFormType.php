@@ -8,6 +8,8 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
@@ -23,6 +25,10 @@ class RegistrationFormType extends AbstractType
                 'label' => 'Adresse mail',
                 'required' => true
             ])
+            ->add('username', TextType::class, [
+                'label' => 'Nom d\'utilisateur',
+                'required' => true
+            ])
             ->add('agreeTerms', CheckboxType::class, [
                 'label' => 'Accepter les termes d\'utilisation',
                 'mapped' => false,
@@ -35,8 +41,8 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'first_options' => ['row_attr' => ['label' => "Mot de passe"]],
-                'second_options' => ['row_attr' => ['label' => "Confirmez le mot de passe"]],
+                'first_options' => ['label' => "Mot de passe"],
+                'second_options' => ['label' => "Confirmez le mot de passe"],
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
@@ -53,7 +59,11 @@ class RegistrationFormType extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
-            ]);
+            ])
+            ->add('submit', SubmitType::class, [
+                'label' => 'Valider',
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

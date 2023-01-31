@@ -295,23 +295,12 @@ class FrameworkConfig implements \Symfony\Component\Config\Builder\ConfigBuilder
     }
 
     /**
-     * @template TValue
-     * @param TValue $value
      * form configuration
-     * @default {"enabled":false,"csrf_protection":{"enabled":null,"field_name":"_token"}}
-     * @return \Symfony\Config\Framework\FormConfig|$this
-     * @psalm-return (TValue is array ? \Symfony\Config\Framework\FormConfig : static)
-     */
-    public function form(array $value = []): \Symfony\Config\Framework\FormConfig|static
+     * @default {"enabled":true,"csrf_protection":{"enabled":null,"field_name":"_token"}}
+    */
+    public function form(array $value = []): \Symfony\Config\Framework\FormConfig
     {
-        if (!\is_array($value)) {
-            $this->_usedProperties['form'] = true;
-            $this->form = $value;
-
-            return $this;
-        }
-
-        if (!$this->form instanceof \Symfony\Config\Framework\FormConfig) {
+        if (null === $this->form) {
             $this->_usedProperties['form'] = true;
             $this->form = new \Symfony\Config\Framework\FormConfig($value);
         } elseif (0 < \func_num_args()) {
@@ -618,23 +607,12 @@ class FrameworkConfig implements \Symfony\Component\Config\Builder\ConfigBuilder
     }
 
     /**
-     * @template TValue
-     * @param TValue $value
      * validation configuration
-     * @default {"enabled":false,"enable_annotations":true,"static_method":["loadValidatorMetadata"],"translation_domain":"validators","mapping":{"paths":[]},"not_compromised_password":{"enabled":true,"endpoint":null},"auto_mapping":[]}
-     * @return \Symfony\Config\Framework\ValidationConfig|$this
-     * @psalm-return (TValue is array ? \Symfony\Config\Framework\ValidationConfig : static)
-     */
-    public function validation(array $value = []): \Symfony\Config\Framework\ValidationConfig|static
+     * @default {"enabled":true,"enable_annotations":true,"static_method":["loadValidatorMetadata"],"translation_domain":"validators","mapping":{"paths":[]},"not_compromised_password":{"enabled":true,"endpoint":null},"auto_mapping":[]}
+    */
+    public function validation(array $value = []): \Symfony\Config\Framework\ValidationConfig
     {
-        if (!\is_array($value)) {
-            $this->_usedProperties['validation'] = true;
-            $this->validation = $value;
-
-            return $this;
-        }
-
-        if (!$this->validation instanceof \Symfony\Config\Framework\ValidationConfig) {
+        if (null === $this->validation) {
             $this->_usedProperties['validation'] = true;
             $this->validation = new \Symfony\Config\Framework\ValidationConfig($value);
         } elseif (0 < \func_num_args()) {
@@ -645,23 +623,12 @@ class FrameworkConfig implements \Symfony\Component\Config\Builder\ConfigBuilder
     }
 
     /**
-     * @template TValue
-     * @param TValue $value
      * annotation configuration
-     * @default {"enabled":false,"cache":"php_array","file_cache_dir":"%kernel.cache_dir%\/annotations","debug":true}
-     * @return \Symfony\Config\Framework\AnnotationsConfig|$this
-     * @psalm-return (TValue is array ? \Symfony\Config\Framework\AnnotationsConfig : static)
-     */
-    public function annotations(array $value = []): \Symfony\Config\Framework\AnnotationsConfig|static
+     * @default {"enabled":true,"cache":"php_array","file_cache_dir":"%kernel.cache_dir%\/annotations","debug":true}
+    */
+    public function annotations(array $value = []): \Symfony\Config\Framework\AnnotationsConfig
     {
-        if (!\is_array($value)) {
-            $this->_usedProperties['annotations'] = true;
-            $this->annotations = $value;
-
-            return $this;
-        }
-
-        if (!$this->annotations instanceof \Symfony\Config\Framework\AnnotationsConfig) {
+        if (null === $this->annotations) {
             $this->_usedProperties['annotations'] = true;
             $this->annotations = new \Symfony\Config\Framework\AnnotationsConfig($value);
         } elseif (0 < \func_num_args()) {
@@ -1186,7 +1153,7 @@ class FrameworkConfig implements \Symfony\Component\Config\Builder\ConfigBuilder
 
         if (array_key_exists('form', $value)) {
             $this->_usedProperties['form'] = true;
-            $this->form = \is_array($value['form']) ? new \Symfony\Config\Framework\FormConfig($value['form']) : $value['form'];
+            $this->form = new \Symfony\Config\Framework\FormConfig($value['form']);
             unset($value['form']);
         }
 
@@ -1258,13 +1225,13 @@ class FrameworkConfig implements \Symfony\Component\Config\Builder\ConfigBuilder
 
         if (array_key_exists('validation', $value)) {
             $this->_usedProperties['validation'] = true;
-            $this->validation = \is_array($value['validation']) ? new \Symfony\Config\Framework\ValidationConfig($value['validation']) : $value['validation'];
+            $this->validation = new \Symfony\Config\Framework\ValidationConfig($value['validation']);
             unset($value['validation']);
         }
 
         if (array_key_exists('annotations', $value)) {
             $this->_usedProperties['annotations'] = true;
-            $this->annotations = \is_array($value['annotations']) ? new \Symfony\Config\Framework\AnnotationsConfig($value['annotations']) : $value['annotations'];
+            $this->annotations = new \Symfony\Config\Framework\AnnotationsConfig($value['annotations']);
             unset($value['annotations']);
         }
 
@@ -1430,7 +1397,7 @@ class FrameworkConfig implements \Symfony\Component\Config\Builder\ConfigBuilder
             $output['csrf_protection'] = $this->csrfProtection->toArray();
         }
         if (isset($this->_usedProperties['form'])) {
-            $output['form'] = $this->form instanceof \Symfony\Config\Framework\FormConfig ? $this->form->toArray() : $this->form;
+            $output['form'] = $this->form->toArray();
         }
         if (isset($this->_usedProperties['httpCache'])) {
             $output['http_cache'] = $this->httpCache instanceof \Symfony\Config\Framework\HttpCacheConfig ? $this->httpCache->toArray() : $this->httpCache;
@@ -1466,10 +1433,10 @@ class FrameworkConfig implements \Symfony\Component\Config\Builder\ConfigBuilder
             $output['translator'] = $this->translator instanceof \Symfony\Config\Framework\TranslatorConfig ? $this->translator->toArray() : $this->translator;
         }
         if (isset($this->_usedProperties['validation'])) {
-            $output['validation'] = $this->validation instanceof \Symfony\Config\Framework\ValidationConfig ? $this->validation->toArray() : $this->validation;
+            $output['validation'] = $this->validation->toArray();
         }
         if (isset($this->_usedProperties['annotations'])) {
-            $output['annotations'] = $this->annotations instanceof \Symfony\Config\Framework\AnnotationsConfig ? $this->annotations->toArray() : $this->annotations;
+            $output['annotations'] = $this->annotations->toArray();
         }
         if (isset($this->_usedProperties['serializer'])) {
             $output['serializer'] = $this->serializer instanceof \Symfony\Config\Framework\SerializerConfig ? $this->serializer->toArray() : $this->serializer;
