@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Temperature index{% endblock %}
+
+{% block body %}
+    <h1>Temperature index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Value</th>
+                <th>NightValue</th>
+                <th>Delta</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for temperature in temperatures %}
+            <tr>
+                <td>{{ temperature.id }}</td>
+                <td>{{ temperature.value }}</td>
+                <td>{{ temperature.nightValue }}</td>
+                <td>{{ temperature.delta }}</td>
+                <td>
+                    <a href="{{ path('app_temperature_show', {'id': temperature.id}) }}">show</a>
+                    <a href="{{ path('app_temperature_edit', {'id': temperature.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_temperature_new') }}">Create new</a>
+{% endblock %}

@@ -34,9 +34,9 @@ class TerrariumController extends AbstractController
             return $this->redirectToRoute('app_terrarium_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('terrarium/new.html.twig', [
+        return $this->render('terrarium/new.html.twig', [
             'terrarium' => $terrarium,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 

@@ -3,10 +3,12 @@
 namespace App\Form;
 
 use App\Entity\Terrarium;
-use Doctrine\DBAL\Types\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -19,21 +21,40 @@ class TerrariumType extends AbstractType
                 'label' => 'Luminosité minimale avant l\'activation du jour synthétique (en %)',
                 'required' => true
             ])
-            ->add('nightHour', TimeType::class, [
-                'label' => 'Début du cycle nuit',
-                'required' => true
-            ])
-            ->add('dayHour', TimeType::class, [
-                'label' => 'Début du cycle jour',
-                'required' => true
-            ])
             ->add('name', TextType::class, [
                 'label' => 'Nom du terrarium',
                 'required' => false
             ])
-            ->add('specimen')
-            ->add('temperature')
-            ->add('humidity')
+            ->add('hourDay', TimeType::class, [
+                'label' => 'Début heure de jour',
+                'required' => true,
+                'widget' => 'single_text',
+                'html5' => true
+            ])
+            ->add('hourNight', TimeType::class, [
+                'label' => 'Fin heure de jour',
+                'required' => true,
+                'widget' => 'single_text',
+                'html5' => true
+            ])
+            ->add('specimen', TextareaType::class, [
+                'label' => 'Spécimen',
+                'required' => true,
+            ])
+            ->add('temperature', TemperatureType::class, [
+                'label' => 'Température',
+                'required' => true
+            ])
+            ->add('humidity',  HumidityType::class, [
+                'label' => 'Humidité',
+                'required' => true
+            ])
+            ->add('submit', SubmitType::class, [
+                'label' => 'Valider',
+                'attr' => [
+                    "class" => "btn btn-primary btn-sm text-end"
+                ],
+            ])
         ;
     }
 

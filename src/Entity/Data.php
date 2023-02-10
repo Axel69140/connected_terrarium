@@ -2,17 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\DataRepository;
 use Doctrine\ORM\Mapping as ORM;
-
-#[ORM\Entity(repositoryClass: DataRepository::class)]
-class Data
+#[ORM\MappedSuperclass]
+abstract class Data
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
     #[ORM\Column]
     private ?float $value = null;
 
@@ -21,11 +14,6 @@ class Data
 
     #[ORM\Column]
     private ?float $delta = null;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getValue(): ?float
     {

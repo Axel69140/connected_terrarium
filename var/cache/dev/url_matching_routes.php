@@ -14,9 +14,15 @@ return [
         '/_profiler/phpinfo' => [[['_route' => '_profiler_phpinfo', '_controller' => 'web_profiler.controller.profiler::phpinfoAction'], null, null, null, false, false, null]],
         '/_profiler/xdebug' => [[['_route' => '_profiler_xdebug', '_controller' => 'web_profiler.controller.profiler::xdebugAction'], null, null, null, false, false, null]],
         '/_profiler/open' => [[['_route' => '_profiler_open_file', '_controller' => 'web_profiler.controller.profiler::openAction'], null, null, null, false, false, null]],
+        '/humidity' => [[['_route' => 'app_humidity_index', '_controller' => 'App\\Controller\\HumidityController::index'], null, ['GET' => 0], null, true, false, null]],
+        '/humidity/new' => [[['_route' => 'app_humidity_new', '_controller' => 'App\\Controller\\HumidityController::new'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
         '/register' => [[['_route' => 'app_register', '_controller' => 'App\\Controller\\RegistrationController::register'], null, null, null, false, false, null]],
+        '/reset-password' => [[['_route' => 'app_forgot_password_request', '_controller' => 'App\\Controller\\ResetPasswordController::request'], null, null, null, false, false, null]],
+        '/reset-password/check-email' => [[['_route' => 'app_check_email', '_controller' => 'App\\Controller\\ResetPasswordController::checkEmail'], null, null, null, false, false, null]],
         '/login' => [[['_route' => 'app_login', '_controller' => 'App\\Controller\\SecurityController::login'], null, null, null, false, false, null]],
         '/logout' => [[['_route' => 'app_logout', '_controller' => 'App\\Controller\\SecurityController::logout'], null, null, null, false, false, null]],
+        '/temperature' => [[['_route' => 'app_temperature_index', '_controller' => 'App\\Controller\\TemperatureController::index'], null, ['GET' => 0], null, true, false, null]],
+        '/temperature/new' => [[['_route' => 'app_temperature_new', '_controller' => 'App\\Controller\\TemperatureController::new'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
         '/terrarium' => [[['_route' => 'app_terrarium_index', '_controller' => 'App\\Controller\\TerrariumController::index'], null, ['GET' => 0], null, true, false, null]],
         '/terrarium/new' => [[['_route' => 'app_terrarium_new', '_controller' => 'App\\Controller\\TerrariumController::new'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
     ],
@@ -37,10 +43,23 @@ return [
                         .'|(*:159)'
                     .')'
                 .')'
-                .'|/terrarium/([^/]++)(?'
-                    .'|(*:191)'
-                    .'|/edit(*:204)'
-                    .'|(*:212)'
+                .'|/humidity/([^/]++)(?'
+                    .'|(*:190)'
+                    .'|/edit(*:203)'
+                    .'|(*:211)'
+                .')'
+                .'|/reset\\-password/reset(?:/([^/]++))?(*:256)'
+                .'|/te(?'
+                    .'|mperature/([^/]++)(?'
+                        .'|(*:291)'
+                        .'|/edit(*:304)'
+                        .'|(*:312)'
+                    .')'
+                    .'|rrarium/([^/]++)(?'
+                        .'|(*:340)'
+                        .'|/edit(*:353)'
+                        .'|(*:361)'
+                    .')'
                 .')'
             .')/?$}sDu',
     ],
@@ -52,9 +71,16 @@ return [
         136 => [[['_route' => '_profiler_exception', '_controller' => 'web_profiler.controller.exception_panel::body'], ['token'], null, null, false, false, null]],
         149 => [[['_route' => '_profiler_exception_css', '_controller' => 'web_profiler.controller.exception_panel::stylesheet'], ['token'], null, null, false, false, null]],
         159 => [[['_route' => '_profiler', '_controller' => 'web_profiler.controller.profiler::panelAction'], ['token'], null, null, false, true, null]],
-        191 => [[['_route' => 'app_terrarium_show', '_controller' => 'App\\Controller\\TerrariumController::show'], ['id'], ['GET' => 0], null, false, true, null]],
-        204 => [[['_route' => 'app_terrarium_edit', '_controller' => 'App\\Controller\\TerrariumController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        212 => [
+        190 => [[['_route' => 'app_humidity_show', '_controller' => 'App\\Controller\\HumidityController::show'], ['id'], ['GET' => 0], null, false, true, null]],
+        203 => [[['_route' => 'app_humidity_edit', '_controller' => 'App\\Controller\\HumidityController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        211 => [[['_route' => 'app_humidity_delete', '_controller' => 'App\\Controller\\HumidityController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
+        256 => [[['_route' => 'app_reset_password', 'token' => null, '_controller' => 'App\\Controller\\ResetPasswordController::reset'], ['token'], null, null, false, true, null]],
+        291 => [[['_route' => 'app_temperature_show', '_controller' => 'App\\Controller\\TemperatureController::show'], ['id'], ['GET' => 0], null, false, true, null]],
+        304 => [[['_route' => 'app_temperature_edit', '_controller' => 'App\\Controller\\TemperatureController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        312 => [[['_route' => 'app_temperature_delete', '_controller' => 'App\\Controller\\TemperatureController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
+        340 => [[['_route' => 'app_terrarium_show', '_controller' => 'App\\Controller\\TerrariumController::show'], ['id'], ['GET' => 0], null, false, true, null]],
+        353 => [[['_route' => 'app_terrarium_edit', '_controller' => 'App\\Controller\\TerrariumController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        361 => [
             [['_route' => 'app_terrarium_delete', '_controller' => 'App\\Controller\\TerrariumController::delete'], ['id'], ['POST' => 0], null, false, true, null],
             [null, null, null, null, false, false, 0],
         ],

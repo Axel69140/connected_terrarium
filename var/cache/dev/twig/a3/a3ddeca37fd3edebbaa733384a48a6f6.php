@@ -102,24 +102,24 @@ class __TwigTemplate_dbcb070a2f8c846eb2182e8bbf513228 extends Template
         if (twig_get_attribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 11, $this->source); })()), "user", [], "any", false, false, false, 11)) {
             // line 12
             echo "        <div class=\"mb-3\">
-            You are logged in as ";
+            Vous êtes connecté en tant que ";
             // line 13
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 13, $this->source); })()), "user", [], "any", false, false, false, 13), "userIdentifier", [], "any", false, false, false, 13), "html", null, true);
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 13, $this->source); })()), "user", [], "any", false, false, false, 13), "email", [], "any", false, false, false, 13), "html", null, true);
             echo ", <a href=\"";
             echo $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_logout");
-            echo "\">Logout</a>
+            echo "\">Déconnexion</a>
         </div>
     ";
         }
         // line 16
         echo "
-    <h1 class=\"h3 mb-3 font-weight-normal\">Please sign in</h1>
+    <h1 class=\"h3 mb-3 font-weight-normal\">Connexion</h1>
     <label for=\"inputEmail\">Email</label>
     <input type=\"email\" value=\"";
         // line 19
         echo twig_escape_filter($this->env, (isset($context["last_username"]) || array_key_exists("last_username", $context) ? $context["last_username"] : (function () { throw new RuntimeError('Variable "last_username" does not exist.', 19, $this->source); })()), "html", null, true);
         echo "\" name=\"email\" id=\"inputEmail\" class=\"form-control\" autocomplete=\"email\" required autofocus>
-    <label for=\"inputPassword\">Password</label>
+    <label for=\"inputPassword\">Mot de passe</label>
     <input type=\"password\" name=\"password\" id=\"inputPassword\" class=\"form-control\" autocomplete=\"current-password\" required>
 
     <input type=\"hidden\" name=\"_csrf_token\"
@@ -133,8 +133,17 @@ class __TwigTemplate_dbcb070a2f8c846eb2182e8bbf513228 extends Template
         // line 37
         echo "
     <button class=\"btn btn-lg btn-primary\" type=\"submit\">
-        Sign in
+        Valider
     </button>
+
+    <a href=\"";
+        // line 42
+        echo $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_register");
+        echo "\">Inscription</a>
+    <a href=\"";
+        // line 43
+        echo $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_forgot_password_request");
+        echo "\">Mot de passe oublié ?</a>
 </form>
 ";
         
@@ -157,7 +166,7 @@ class __TwigTemplate_dbcb070a2f8c846eb2182e8bbf513228 extends Template
 
     public function getDebugInfo()
     {
-        return array (  134 => 37,  128 => 24,  120 => 19,  115 => 16,  107 => 13,  104 => 12,  102 => 11,  99 => 10,  93 => 8,  91 => 7,  88 => 6,  78 => 5,  59 => 3,  36 => 1,);
+        return array (  145 => 43,  141 => 42,  134 => 37,  128 => 24,  120 => 19,  115 => 16,  107 => 13,  104 => 12,  102 => 11,  99 => 10,  93 => 8,  91 => 7,  88 => 6,  78 => 5,  59 => 3,  36 => 1,);
     }
 
     public function getSourceContext()
@@ -174,14 +183,14 @@ class __TwigTemplate_dbcb070a2f8c846eb2182e8bbf513228 extends Template
 
     {% if app.user %}
         <div class=\"mb-3\">
-            You are logged in as {{ app.user.userIdentifier }}, <a href=\"{{ path('app_logout') }}\">Logout</a>
+            Vous êtes connecté en tant que {{ app.user.email }}, <a href=\"{{ path('app_logout') }}\">Déconnexion</a>
         </div>
     {% endif %}
 
-    <h1 class=\"h3 mb-3 font-weight-normal\">Please sign in</h1>
+    <h1 class=\"h3 mb-3 font-weight-normal\">Connexion</h1>
     <label for=\"inputEmail\">Email</label>
     <input type=\"email\" value=\"{{ last_username }}\" name=\"email\" id=\"inputEmail\" class=\"form-control\" autocomplete=\"email\" required autofocus>
-    <label for=\"inputPassword\">Password</label>
+    <label for=\"inputPassword\">Mot de passe</label>
     <input type=\"password\" name=\"password\" id=\"inputPassword\" class=\"form-control\" autocomplete=\"current-password\" required>
 
     <input type=\"hidden\" name=\"_csrf_token\"
@@ -200,8 +209,11 @@ class __TwigTemplate_dbcb070a2f8c846eb2182e8bbf513228 extends Template
     #}
 
     <button class=\"btn btn-lg btn-primary\" type=\"submit\">
-        Sign in
+        Valider
     </button>
+
+    <a href=\"{{ path('app_register') }}\">Inscription</a>
+    <a href=\"{{ path('app_forgot_password_request') }}\">Mot de passe oublié ?</a>
 </form>
 {% endblock %}
 ", "security/login.html.twig", "/Users/axeldufrenay/Documents/connected_terrarium/templates/security/login.html.twig");

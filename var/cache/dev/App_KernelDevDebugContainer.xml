@@ -18,6 +18,7 @@
       <parameter key="TwigExtraBundle">Twig\Extra\TwigExtraBundle\TwigExtraBundle</parameter>
       <parameter key="WebProfilerBundle">Symfony\Bundle\WebProfilerBundle\WebProfilerBundle</parameter>
       <parameter key="SensioFrameworkExtraBundle">Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle</parameter>
+      <parameter key="SymfonyCastsResetPasswordBundle">SymfonyCasts\Bundle\ResetPassword\SymfonyCastsResetPasswordBundle</parameter>
     </parameter>
     <parameter key="kernel.bundles_metadata" type="collection">
       <parameter key="FrameworkBundle" type="collection">
@@ -55,6 +56,10 @@
       <parameter key="SensioFrameworkExtraBundle" type="collection">
         <parameter key="path">/Users/axeldufrenay/Documents/connected_terrarium/vendor/sensio/framework-extra-bundle/src</parameter>
         <parameter key="namespace">Sensio\Bundle\FrameworkExtraBundle</parameter>
+      </parameter>
+      <parameter key="SymfonyCastsResetPasswordBundle" type="collection">
+        <parameter key="path">/Users/axeldufrenay/Documents/connected_terrarium/vendor/symfonycasts/reset-password-bundle/src</parameter>
+        <parameter key="namespace">SymfonyCasts\Bundle\ResetPassword</parameter>
       </parameter>
     </parameter>
     <parameter key="kernel.charset">UTF-8</parameter>
@@ -258,6 +263,10 @@
         <parameter>db</parameter>
         <parameter>@Doctrine/Collector/db.html.twig</parameter>
       </parameter>
+      <parameter key="mailer.data_collector" type="collection">
+        <parameter>mailer</parameter>
+        <parameter>@WebProfiler/Collector/mailer.html.twig</parameter>
+      </parameter>
       <parameter key="data_collector.config" type="collection">
         <parameter>config</parameter>
         <parameter>@WebProfiler/Collector/config.html.twig</parameter>
@@ -274,11 +283,27 @@
     <service id="App\Entity" class="App\Entity" abstract="true">
       <tag name="container.excluded" source="in &quot;config/services.yaml&quot;"/>
     </service>
+    <service id="App\Controller\HumidityController" class="App\Controller\HumidityController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="container.service_subscriber"/>
+      <call method="setContainer">
+        <argument type="service" id=".service_locator.CshazM0.App\Controller\HumidityController"/>
+      </call>
+    </service>
     <service id="App\Controller\RegistrationController" class="App\Controller\RegistrationController" public="true" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
       <tag name="container.service_subscriber"/>
       <call method="setContainer">
         <argument type="service" id=".service_locator.CshazM0.App\Controller\RegistrationController"/>
+      </call>
+    </service>
+    <service id="App\Controller\ResetPasswordController" class="App\Controller\ResetPasswordController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="container.service_subscriber"/>
+      <argument type="service" id="symfonycasts.reset_password.helper"/>
+      <argument type="service" id="doctrine.orm.default_entity_manager"/>
+      <call method="setContainer">
+        <argument type="service" id=".service_locator.CshazM0.App\Controller\ResetPasswordController"/>
       </call>
     </service>
     <service id="App\Controller\SecurityController" class="App\Controller\SecurityController" public="true" autowire="true" autoconfigure="true">
@@ -288,6 +313,13 @@
         <argument type="service" id=".service_locator.CshazM0.App\Controller\SecurityController"/>
       </call>
     </service>
+    <service id="App\Controller\TemperatureController" class="App\Controller\TemperatureController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="container.service_subscriber"/>
+      <call method="setContainer">
+        <argument type="service" id=".service_locator.CshazM0.App\Controller\TemperatureController"/>
+      </call>
+    </service>
     <service id="App\Controller\TerrariumController" class="App\Controller\TerrariumController" public="true" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
       <tag name="container.service_subscriber"/>
@@ -295,17 +327,29 @@
         <argument type="service" id=".service_locator.CshazM0.App\Controller\TerrariumController"/>
       </call>
     </service>
+    <service id="App\Form\ChangePasswordFormType" class="App\Form\ChangePasswordFormType" autowire="true" autoconfigure="true">
+      <tag name="form.type"/>
+    </service>
+    <service id="App\Form\HumidityType" class="App\Form\HumidityType" autowire="true" autoconfigure="true">
+      <tag name="form.type"/>
+    </service>
     <service id="App\Form\RegistrationFormType" class="App\Form\RegistrationFormType" autowire="true" autoconfigure="true">
+      <tag name="form.type"/>
+    </service>
+    <service id="App\Form\ResetPasswordRequestFormType" class="App\Form\ResetPasswordRequestFormType" autowire="true" autoconfigure="true">
+      <tag name="form.type"/>
+    </service>
+    <service id="App\Form\TemperatureType" class="App\Form\TemperatureType" autowire="true" autoconfigure="true">
       <tag name="form.type"/>
     </service>
     <service id="App\Form\TerrariumType" class="App\Form\TerrariumType" autowire="true" autoconfigure="true">
       <tag name="form.type"/>
     </service>
-    <service id="App\Repository\DataRepository" class="App\Repository\DataRepository" autowire="true" autoconfigure="true">
+    <service id="App\Repository\HumidityRepository" class="App\Repository\HumidityRepository" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
-    <service id="App\Repository\HumidityRepository" class="App\Repository\HumidityRepository" autowire="true" autoconfigure="true">
+    <service id="App\Repository\ResetPasswordRequestRepository" class="App\Repository\ResetPasswordRequestRepository" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
@@ -435,6 +479,7 @@
         <argument key="cache.serializer" type="service" id="cache.serializer" on-invalid="ignore_uninitialized"/>
         <argument key="cache.annotations" type="service" id="cache.annotations" on-invalid="ignore_uninitialized"/>
         <argument key="cache.property_info" type="service" id="cache.property_info" on-invalid="ignore_uninitialized"/>
+        <argument key="mailer.message_logger_listener" type="service" id="mailer.message_logger_listener" on-invalid="ignore_uninitialized"/>
         <argument key="debug.stopwatch" type="service" id="debug.stopwatch" on-invalid="ignore_uninitialized"/>
         <argument key="debug.event_dispatcher" type="service" id="debug.event_dispatcher" on-invalid="ignore_uninitialized"/>
         <argument key="session_listener" type="service" id="session_listener" on-invalid="ignore_uninitialized"/>
@@ -466,6 +511,9 @@
           <argument>reset</argument>
         </argument>
         <argument key="cache.property_info" type="collection">
+          <argument>reset</argument>
+        </argument>
+        <argument key="mailer.message_logger_listener" type="collection">
           <argument>reset</argument>
         </argument>
         <argument key="debug.stopwatch" type="collection">
@@ -884,7 +932,11 @@
         <argument>Symfony\Bridge\Doctrine\Form\Type</argument>
       </argument>
       <argument type="collection">
+        <argument>App\Form\ChangePasswordFormType</argument>
+        <argument>App\Form\HumidityType</argument>
         <argument>App\Form\RegistrationFormType</argument>
+        <argument>App\Form\ResetPasswordRequestFormType</argument>
+        <argument>App\Form\TemperatureType</argument>
         <argument>App\Form\TerrariumType</argument>
         <argument>Symfony\Component\Form\Extension\Core\Type\FormType</argument>
         <argument>Symfony\Component\Form\Extension\Core\Type\ChoiceType</argument>
@@ -1163,6 +1215,81 @@
         <argument key="cache.doctrine.orm.default.query" type="service" id="cache.doctrine.orm.default.query" on-invalid="ignore_uninitialized"/>
       </argument>
     </service>
+    <service id="mailer.mailer" class="Symfony\Component\Mailer\Mailer">
+      <argument type="service" id="mailer.transports"/>
+      <argument>null</argument>
+      <argument type="service" id="debug.event_dispatcher" on-invalid="ignore"/>
+    </service>
+    <service id="mailer.transports" class="Symfony\Component\Mailer\Transport\Transports">
+      <argument type="collection">
+        <argument key="main">%env(MAILER_DSN)%</argument>
+      </argument>
+      <factory service="mailer.transport_factory" method="fromStrings"/>
+    </service>
+    <service id="mailer.transport_factory" class="Symfony\Component\Mailer\Transport">
+      <argument type="tagged_iterator" tag="mailer.transport_factory"/>
+    </service>
+    <service id="mailer.default_transport" class="Symfony\Component\Mailer\Transport\TransportInterface">
+      <argument>%env(MAILER_DSN)%</argument>
+      <factory service="mailer.transport_factory" method="fromString"/>
+    </service>
+    <service id="mailer.messenger.message_handler" class="Symfony\Component\Mailer\Messenger\MessageHandler">
+      <tag name="messenger.message_handler"/>
+      <argument type="service" id="mailer.transports"/>
+    </service>
+    <service id="mailer.envelope_listener" class="Symfony\Component\Mailer\EventListener\EnvelopeListener">
+      <tag name="kernel.event_subscriber"/>
+      <argument>null</argument>
+      <argument>null</argument>
+    </service>
+    <service id="mailer.message_logger_listener" class="Symfony\Component\Mailer\EventListener\MessageLoggerListener">
+      <tag name="kernel.event_subscriber"/>
+      <tag name="kernel.reset" method="reset"/>
+    </service>
+    <service id="mailer.messenger_transport_listener" class="Symfony\Component\Mailer\EventListener\MessengerTransportListener">
+      <tag name="kernel.event_subscriber"/>
+    </service>
+    <service id="console.command.mailer_test" class="Symfony\Component\Mailer\Command\MailerTestCommand">
+      <tag name="console.command"/>
+      <tag name="container.no_preload"/>
+      <argument type="service" id="mailer.transports"/>
+      <call method="setName">
+        <argument>mailer:test</argument>
+      </call>
+      <call method="setDescription">
+        <argument>Test Mailer transports by sending an email</argument>
+      </call>
+    </service>
+    <service id="mailer.transport_factory.abstract" class="Symfony\Component\Mailer\Transport\AbstractTransportFactory" abstract="true">
+      <tag name="monolog.logger" channel="mailer"/>
+      <argument type="service" id="debug.event_dispatcher"/>
+      <argument type="service" id="http_client" on-invalid="ignore"/>
+      <argument type="service" id="logger" on-invalid="ignore"/>
+    </service>
+    <service id="mailer.transport_factory.null" class="Symfony\Component\Mailer\Transport\NullTransportFactory">
+      <tag name="mailer.transport_factory"/>
+      <argument type="service" id="debug.event_dispatcher"/>
+      <argument>null</argument>
+      <argument type="service" id="logger" on-invalid="ignore"/>
+    </service>
+    <service id="mailer.transport_factory.sendmail" class="Symfony\Component\Mailer\Transport\SendmailTransportFactory">
+      <tag name="mailer.transport_factory"/>
+      <argument type="service" id="debug.event_dispatcher"/>
+      <argument>null</argument>
+      <argument type="service" id="logger" on-invalid="ignore"/>
+    </service>
+    <service id="mailer.transport_factory.smtp" class="Symfony\Component\Mailer\Transport\Smtp\EsmtpTransportFactory">
+      <tag name="mailer.transport_factory" priority="-100"/>
+      <argument type="service" id="debug.event_dispatcher"/>
+      <argument>null</argument>
+      <argument type="service" id="logger" on-invalid="ignore"/>
+    </service>
+    <service id="mailer.transport_factory.native" class="Symfony\Component\Mailer\Transport\NativeTransportFactory">
+      <tag name="mailer.transport_factory"/>
+      <argument type="service" id="debug.event_dispatcher"/>
+      <argument>null</argument>
+      <argument type="service" id="logger" on-invalid="ignore"/>
+    </service>
     <service id="debug.debug_handlers_listener" class="Symfony\Component\HttpKernel\EventListener\DebugHandlersListener">
       <tag name="kernel.event_subscriber"/>
       <tag name="monolog.logger" channel="php"/>
@@ -1355,6 +1482,30 @@
         <argument>0</argument>
       </call>
       <call method="addListener">
+        <argument>Symfony\Component\Mailer\Event\MessageEvent</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="mailer.envelope_listener"/>
+          <argument>onMessage</argument>
+        </argument>
+        <argument>-255</argument>
+      </call>
+      <call method="addListener">
+        <argument>Symfony\Component\Mailer\Event\MessageEvent</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="mailer.message_logger_listener"/>
+          <argument>onMessage</argument>
+        </argument>
+        <argument>-255</argument>
+      </call>
+      <call method="addListener">
+        <argument>Symfony\Component\Mailer\Event\MessageEvent</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="mailer.messenger_transport_listener"/>
+          <argument>onMessage</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
         <argument>kernel.request</argument>
         <argument type="collection">
           <argument type="service_closure" id="debug.debug_handlers_listener"/>
@@ -1529,6 +1680,14 @@
           <argument>onKernelView</argument>
         </argument>
         <argument>-128</argument>
+      </call>
+      <call method="addListener">
+        <argument>Symfony\Component\Mailer\Event\MessageEvent</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="twig.mailer.message_listener"/>
+          <argument>onMessage</argument>
+        </argument>
+        <argument>0</argument>
       </call>
       <call method="addListener">
         <argument>kernel.response</argument>
@@ -1974,7 +2133,7 @@
       <argument type="service" id="form.registry"/>
     </service>
     <service id="form.extension" class="Symfony\Component\Form\Extension\DependencyInjection\DependencyInjectionExtension">
-      <argument type="service" id=".service_locator.GsB_JK5"/>
+      <argument type="service" id=".service_locator.B2_7AP9"/>
       <argument type="collection">
         <argument key="Symfony\Component\Form\Extension\Core\Type\FormType" type="iterator">
           <argument type="service" id="form.type_extension.form.transformation_failure_handling"/>
@@ -2193,6 +2352,9 @@
         <argument type="service" id="data_collector.doctrine"/>
       </call>
       <call method="add">
+        <argument type="service" id="mailer.data_collector"/>
+      </call>
+      <call method="add">
         <argument type="service" id="data_collector.config"/>
       </call>
     </service>
@@ -2331,6 +2493,15 @@
     <service id="data_collector.validator" class="Symfony\Component\Validator\DataCollector\ValidatorDataCollector">
       <tag name="data_collector" template="@WebProfiler/Collector/validator.html.twig" id="validator" priority="320"/>
       <argument type="service" id="debug.validator"/>
+    </service>
+    <service id="mailer.data_collector" class="Symfony\Component\Mailer\DataCollector\MessageDataCollector">
+      <tag name="data_collector" template="@WebProfiler/Collector/mailer.html.twig" id="mailer"/>
+      <argument type="service" id="mailer.message_logger_listener"/>
+    </service>
+    <service id="mime_types" class="Symfony\Component\Mime\MimeTypes">
+      <call method="setDefault">
+        <argument type="service" id="mime_types"/>
+      </call>
     </service>
     <service id="security.authorization_checker" class="Symfony\Component\Security\Core\Authorization\AuthorizationChecker">
       <argument type="service" id="security.token_storage"/>
@@ -3364,7 +3535,7 @@
     <service id="doctrine.orm.configuration" class="Doctrine\ORM\Configuration" abstract="true"/>
     <service id="doctrine.orm.entity_manager.abstract" class="Doctrine\ORM\EntityManager" lazy="true" abstract="true"/>
     <service id="doctrine.orm.container_repository_factory" class="Doctrine\Bundle\DoctrineBundle\Repository\ContainerRepositoryFactory">
-      <argument type="service" id=".service_locator.2t9ByUz"/>
+      <argument type="service" id=".service_locator.qP2bMO2"/>
     </service>
     <service id="doctrine.orm.manager_configurator.abstract" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator" abstract="true">
       <argument type="collection"/>
@@ -3893,6 +4064,7 @@
     <service id="twig.template_iterator" class="Symfony\Bundle\TwigBundle\TemplateIterator">
       <argument type="service" id="kernel"/>
       <argument type="collection">
+        <argument key="/Users/axeldufrenay/Documents/connected_terrarium/vendor/symfony/twig-bridge/Resources/views/Email">email</argument>
         <argument key="/Users/axeldufrenay/Documents/connected_terrarium/vendor/symfony/twig-bridge/Resources/views/Form">null</argument>
       </argument>
       <argument>/Users/axeldufrenay/Documents/connected_terrarium/templates</argument>
@@ -3942,6 +4114,14 @@
       </call>
       <call method="addPath">
         <argument>/Users/axeldufrenay/Documents/connected_terrarium/templates</argument>
+      </call>
+      <call method="addPath">
+        <argument>/Users/axeldufrenay/Documents/connected_terrarium/vendor/symfony/twig-bridge/Resources/views/Email</argument>
+        <argument>email</argument>
+      </call>
+      <call method="addPath">
+        <argument>/Users/axeldufrenay/Documents/connected_terrarium/vendor/symfony/twig-bridge/Resources/views/Email</argument>
+        <argument>!email</argument>
       </call>
       <call method="addPath">
         <argument>/Users/axeldufrenay/Documents/connected_terrarium/vendor/symfony/twig-bridge/Resources/views/Form</argument>
@@ -4075,6 +4255,14 @@
         <argument>Lint a Twig template and outputs encountered errors</argument>
       </call>
     </service>
+    <service id="twig.mailer.message_listener" class="Symfony\Component\Mailer\EventListener\MessageListener">
+      <tag name="kernel.event_subscriber"/>
+      <argument>null</argument>
+      <argument type="service" id="twig.mime_body_renderer"/>
+    </service>
+    <service id="twig.mime_body_renderer" class="Symfony\Bridge\Twig\Mime\BodyRenderer">
+      <argument type="service" id="twig"/>
+    </service>
     <service id="twig.missing_extension_suggestor" class="Twig\Extra\TwigExtraBundle\MissingExtensionSuggestor"/>
     <service id="web_profiler.controller.profiler" class="Symfony\Bundle\WebProfilerBundle\Controller\ProfilerController" public="true">
       <argument type="service" id="router.default" on-invalid="null"/>
@@ -4201,23 +4389,65 @@
     <service id="framework_extra_bundle.argument_name_convertor" class="Sensio\Bundle\FrameworkExtraBundle\Request\ArgumentNameConverter">
       <argument type="service" id="argument_metadata_factory"/>
     </service>
+    <service id="symfonycasts.reset_password.fake_request_repository" class="SymfonyCasts\Bundle\ResetPassword\Persistence\Fake\FakeResetPasswordInternalRepository"/>
+    <service id="symfonycasts.reset_password.cleaner" class="SymfonyCasts\Bundle\ResetPassword\Util\ResetPasswordCleaner">
+      <argument type="service" id="App\Repository\ResetPasswordRequestRepository"/>
+      <argument>true</argument>
+    </service>
+    <service id="SymfonyCasts\Bundle\ResetPassword\Command\ResetPasswordRemoveExpiredCommand" class="SymfonyCasts\Bundle\ResetPassword\Command\ResetPasswordRemoveExpiredCommand">
+      <tag name="console.command" command="reset-password:remove-expired"/>
+      <tag name="container.no_preload"/>
+      <argument type="service" id="symfonycasts.reset_password.cleaner"/>
+      <call method="setName">
+        <argument>reset-password:remove-expired</argument>
+      </call>
+    </service>
+    <service id="symfonycasts.reset_password.random_generator" class="SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordRandomGenerator"/>
+    <service id="symfonycasts.reset_password.token_generator" class="SymfonyCasts\Bundle\ResetPassword\Generator\ResetPasswordTokenGenerator">
+      <argument>%env(APP_SECRET)%</argument>
+      <argument type="service" id="symfonycasts.reset_password.random_generator"/>
+    </service>
+    <service id="symfonycasts.reset_password.helper" class="SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelper">
+      <argument type="service" id="symfonycasts.reset_password.token_generator"/>
+      <argument type="service" id="symfonycasts.reset_password.cleaner"/>
+      <argument type="service" id="App\Repository\ResetPasswordRequestRepository"/>
+      <argument>3600</argument>
+      <argument>3600</argument>
+    </service>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\HumidityController" class="App\Controller\HumidityController" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\HumidityController" class="App\Controller\HumidityController" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Controller\HumidityController" class="App\Controller\HumidityController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\RegistrationController" class="App\Controller\RegistrationController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\RegistrationController" class="App\Controller\RegistrationController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\RegistrationController" class="App\Controller\RegistrationController" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\ResetPasswordController" class="App\Controller\ResetPasswordController" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\ResetPasswordController" class="App\Controller\ResetPasswordController" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Controller\ResetPasswordController" class="App\Controller\ResetPasswordController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\SecurityController" class="App\Controller\SecurityController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\SecurityController" class="App\Controller\SecurityController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\SecurityController" class="App\Controller\SecurityController" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\TemperatureController" class="App\Controller\TemperatureController" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\TemperatureController" class="App\Controller\TemperatureController" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Controller\TemperatureController" class="App\Controller\TemperatureController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\TerrariumController" class="App\Controller\TerrariumController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\TerrariumController" class="App\Controller\TerrariumController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\TerrariumController" class="App\Controller\TerrariumController" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\ChangePasswordFormType" class="App\Form\ChangePasswordFormType" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Form\ChangePasswordFormType" class="App\Form\ChangePasswordFormType" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\HumidityType" class="App\Form\HumidityType" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Form\HumidityType" class="App\Form\HumidityType" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\RegistrationFormType" class="App\Form\RegistrationFormType" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Form\RegistrationFormType" class="App\Form\RegistrationFormType" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\ResetPasswordRequestFormType" class="App\Form\ResetPasswordRequestFormType" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Form\ResetPasswordRequestFormType" class="App\Form\ResetPasswordRequestFormType" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\TemperatureType" class="App\Form\TemperatureType" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Form\TemperatureType" class="App\Form\TemperatureType" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\TerrariumType" class="App\Form\TerrariumType" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Form\TerrariumType" class="App\Form\TerrariumType" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\DataRepository" class="App\Repository\DataRepository" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\Repository\DataRepository" class="App\Repository\DataRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\HumidityRepository" class="App\Repository\HumidityRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\HumidityRepository" class="App\Repository\HumidityRepository" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\ResetPasswordRequestRepository" class="App\Repository\ResetPasswordRequestRepository" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\ResetPasswordRequestRepository" class="App\Repository\ResetPasswordRequestRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\TemperatureRepository" class="App\Repository\TemperatureRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\TemperatureRepository" class="App\Repository\TemperatureRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\TerrariumRepository" class="App\Repository\TerrariumRepository" autowire="true" abstract="true"/>
@@ -4561,6 +4791,25 @@
         <argument key="loader" type="service_closure" id=".errored..service_locator.y4_Zrx..Symfony\Component\Config\Loader\LoaderInterface"/>
       </argument>
     </service>
+    <service id=".service_locator.Ir_uZOH" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="humidityRepository" type="service_closure" id="App\Repository\HumidityRepository"/>
+      </argument>
+    </service>
+    <service id=".service_locator.mIwn17T" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="humidity" type="service_closure" id=".errored..service_locator.mIwn17T.App\Entity\Humidity"/>
+      </argument>
+    </service>
+    <service id=".service_locator.m_Jm4rm" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="humidity" type="service_closure" id=".errored..service_locator.m_Jm4rm.App\Entity\Humidity"/>
+        <argument key="humidityRepository" type="service_closure" id="App\Repository\HumidityRepository"/>
+      </argument>
+    </service>
     <service id=".service_locator.UUMJOv4" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -4570,10 +4819,41 @@
         <argument key="userPasswordHasher" type="service_closure" id="security.user_password_hasher"/>
       </argument>
     </service>
+    <service id=".service_locator.uVvF4gL" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="mailer" type="service_closure" id="mailer.mailer"/>
+      </argument>
+    </service>
+    <service id=".service_locator.Mhqdd2r" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="passwordHasher" type="service_closure" id="security.user_password_hasher"/>
+      </argument>
+    </service>
     <service id=".service_locator.rSTd.nA" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="authenticationUtils" type="service_closure" id="security.authentication_utils"/>
+      </argument>
+    </service>
+    <service id=".service_locator.02Gob5Y" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="temperatureRepository" type="service_closure" id="App\Repository\TemperatureRepository"/>
+      </argument>
+    </service>
+    <service id=".service_locator.TZZtJ9x" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="temperature" type="service_closure" id=".errored..service_locator.TZZtJ9x.App\Entity\Temperature"/>
+      </argument>
+    </service>
+    <service id=".service_locator.ej.U9CI" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="temperature" type="service_closure" id=".errored..service_locator.ej.U9CI.App\Entity\Temperature"/>
+        <argument key="temperatureRepository" type="service_closure" id="App\Repository\TemperatureRepository"/>
       </argument>
     </service>
     <service id=".service_locator.pPXPJTZ" class="Symfony\Component\DependencyInjection\ServiceLocator">
@@ -4595,11 +4875,23 @@
         <argument key="terrariumRepository" type="service_closure" id="App\Repository\TerrariumRepository"/>
       </argument>
     </service>
-    <service id=".service_locator.JQSOeJ_" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.q7QosyK" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
+        <argument key="App\Controller\HumidityController::delete" type="service_closure" id=".service_locator.m_Jm4rm"/>
+        <argument key="App\Controller\HumidityController::edit" type="service_closure" id=".service_locator.m_Jm4rm"/>
+        <argument key="App\Controller\HumidityController::index" type="service_closure" id=".service_locator.Ir_uZOH"/>
+        <argument key="App\Controller\HumidityController::new" type="service_closure" id=".service_locator.Ir_uZOH"/>
+        <argument key="App\Controller\HumidityController::show" type="service_closure" id=".service_locator.mIwn17T"/>
         <argument key="App\Controller\RegistrationController::register" type="service_closure" id=".service_locator.UUMJOv4"/>
+        <argument key="App\Controller\ResetPasswordController::request" type="service_closure" id=".service_locator.uVvF4gL"/>
+        <argument key="App\Controller\ResetPasswordController::reset" type="service_closure" id=".service_locator.Mhqdd2r"/>
         <argument key="App\Controller\SecurityController::login" type="service_closure" id=".service_locator.rSTd.nA"/>
+        <argument key="App\Controller\TemperatureController::delete" type="service_closure" id=".service_locator.ej.U9CI"/>
+        <argument key="App\Controller\TemperatureController::edit" type="service_closure" id=".service_locator.ej.U9CI"/>
+        <argument key="App\Controller\TemperatureController::index" type="service_closure" id=".service_locator.02Gob5Y"/>
+        <argument key="App\Controller\TemperatureController::new" type="service_closure" id=".service_locator.02Gob5Y"/>
+        <argument key="App\Controller\TemperatureController::show" type="service_closure" id=".service_locator.TZZtJ9x"/>
         <argument key="App\Controller\TerrariumController::delete" type="service_closure" id=".service_locator.RU9gbyC"/>
         <argument key="App\Controller\TerrariumController::edit" type="service_closure" id=".service_locator.RU9gbyC"/>
         <argument key="App\Controller\TerrariumController::index" type="service_closure" id=".service_locator.pPXPJTZ"/>
@@ -4609,8 +4901,20 @@
         <argument key="App\Kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="kernel::loadRoutes" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.y4_Zrx."/>
+        <argument key="App\Controller\HumidityController:delete" type="service_closure" id=".service_locator.m_Jm4rm"/>
+        <argument key="App\Controller\HumidityController:edit" type="service_closure" id=".service_locator.m_Jm4rm"/>
+        <argument key="App\Controller\HumidityController:index" type="service_closure" id=".service_locator.Ir_uZOH"/>
+        <argument key="App\Controller\HumidityController:new" type="service_closure" id=".service_locator.Ir_uZOH"/>
+        <argument key="App\Controller\HumidityController:show" type="service_closure" id=".service_locator.mIwn17T"/>
         <argument key="App\Controller\RegistrationController:register" type="service_closure" id=".service_locator.UUMJOv4"/>
+        <argument key="App\Controller\ResetPasswordController:request" type="service_closure" id=".service_locator.uVvF4gL"/>
+        <argument key="App\Controller\ResetPasswordController:reset" type="service_closure" id=".service_locator.Mhqdd2r"/>
         <argument key="App\Controller\SecurityController:login" type="service_closure" id=".service_locator.rSTd.nA"/>
+        <argument key="App\Controller\TemperatureController:delete" type="service_closure" id=".service_locator.ej.U9CI"/>
+        <argument key="App\Controller\TemperatureController:edit" type="service_closure" id=".service_locator.ej.U9CI"/>
+        <argument key="App\Controller\TemperatureController:index" type="service_closure" id=".service_locator.02Gob5Y"/>
+        <argument key="App\Controller\TemperatureController:new" type="service_closure" id=".service_locator.02Gob5Y"/>
+        <argument key="App\Controller\TemperatureController:show" type="service_closure" id=".service_locator.TZZtJ9x"/>
         <argument key="App\Controller\TerrariumController:delete" type="service_closure" id=".service_locator.RU9gbyC"/>
         <argument key="App\Controller\TerrariumController:edit" type="service_closure" id=".service_locator.RU9gbyC"/>
         <argument key="App\Controller\TerrariumController:index" type="service_closure" id=".service_locator.pPXPJTZ"/>
@@ -4695,10 +4999,14 @@
       <argument type="service" id="debug.argument_resolver.not_tagged_controller.inner"/>
       <argument type="service" id="debug.stopwatch"/>
     </service>
-    <service id=".service_locator.GsB_JK5" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.B2_7AP9" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
+        <argument key="App\Form\ChangePasswordFormType" type="service_closure" id="App\Form\ChangePasswordFormType"/>
+        <argument key="App\Form\HumidityType" type="service_closure" id="App\Form\HumidityType"/>
         <argument key="App\Form\RegistrationFormType" type="service_closure" id="App\Form\RegistrationFormType"/>
+        <argument key="App\Form\ResetPasswordRequestFormType" type="service_closure" id="App\Form\ResetPasswordRequestFormType"/>
+        <argument key="App\Form\TemperatureType" type="service_closure" id="App\Form\TemperatureType"/>
         <argument key="App\Form\TerrariumType" type="service_closure" id="App\Form\TerrariumType"/>
         <argument key="Symfony\Bridge\Doctrine\Form\Type\EntityType" type="service_closure" id="form.type.entity"/>
         <argument key="Symfony\Component\Form\Extension\Core\Type\ChoiceType" type="service_closure" id="form.type.choice"/>
@@ -4734,11 +5042,11 @@
         <argument key="doctrine.orm.listeners.doctrine_token_provider_schema_subscriber" type="service_closure" id="doctrine.orm.listeners.doctrine_token_provider_schema_subscriber"/>
       </argument>
     </service>
-    <service id=".service_locator.2t9ByUz" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.qP2bMO2" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
-        <argument key="App\Repository\DataRepository" type="service_closure" id="App\Repository\DataRepository"/>
         <argument key="App\Repository\HumidityRepository" type="service_closure" id="App\Repository\HumidityRepository"/>
+        <argument key="App\Repository\ResetPasswordRequestRepository" type="service_closure" id="App\Repository\ResetPasswordRequestRepository"/>
         <argument key="App\Repository\TemperatureRepository" type="service_closure" id="App\Repository\TemperatureRepository"/>
         <argument key="App\Repository\TerrariumRepository" type="service_closure" id="App\Repository\TerrariumRepository"/>
         <argument key="App\Repository\UserRepository" type="service_closure" id="App\Repository\UserRepository"/>
@@ -4783,15 +5091,33 @@
         <argument key="twig" type="service_closure" id="twig" on-invalid="ignore"/>
       </argument>
     </service>
+    <service id=".service_locator.CshazM0.App\Controller\HumidityController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\HumidityController"/>
+      <argument>App\Controller\HumidityController</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.CshazM0" method="withContext"/>
+    </service>
     <service id=".service_locator.CshazM0.App\Controller\RegistrationController" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\RegistrationController"/>
       <argument>App\Controller\RegistrationController</argument>
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.CshazM0" method="withContext"/>
     </service>
+    <service id=".service_locator.CshazM0.App\Controller\ResetPasswordController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\ResetPasswordController"/>
+      <argument>App\Controller\ResetPasswordController</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.CshazM0" method="withContext"/>
+    </service>
     <service id=".service_locator.CshazM0.App\Controller\SecurityController" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\SecurityController"/>
       <argument>App\Controller\SecurityController</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.CshazM0" method="withContext"/>
+    </service>
+    <service id=".service_locator.CshazM0.App\Controller\TemperatureController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\TemperatureController"/>
+      <argument>App\Controller\TemperatureController</argument>
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.CshazM0" method="withContext"/>
     </service>
@@ -4959,12 +5285,12 @@
     <service id="debug.argument_resolver.request.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\RequestValueResolver"/>
     <service id="debug.argument_resolver.session.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\SessionValueResolver"/>
     <service id="debug.argument_resolver.service.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
-      <argument type="service" id=".service_locator.JQSOeJ_"/>
+      <argument type="service" id=".service_locator.q7QosyK"/>
     </service>
     <service id="debug.argument_resolver.default.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver"/>
     <service id="debug.argument_resolver.variadic.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\VariadicValueResolver"/>
     <service id="debug.argument_resolver.not_tagged_controller.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
-      <argument type="service" id=".service_locator.JQSOeJ_"/>
+      <argument type="service" id=".service_locator.q7QosyK"/>
     </service>
     <service id=".doctrine.orm.default_metadata_driver.inner" class="Doctrine\Persistence\Mapping\Driver\MappingDriverChain">
       <call method="addDriver">
@@ -4973,6 +5299,10 @@
       </call>
     </service>
     <service id=".errored..service_locator.y4_Zrx..Symfony\Component\Config\Loader\LoaderInterface" class="Symfony\Component\Config\Loader\LoaderInterface"/>
+    <service id=".errored..service_locator.mIwn17T.App\Entity\Humidity" class="App\Entity\Humidity"/>
+    <service id=".errored..service_locator.m_Jm4rm.App\Entity\Humidity" class="App\Entity\Humidity"/>
+    <service id=".errored..service_locator.TZZtJ9x.App\Entity\Temperature" class="App\Entity\Temperature"/>
+    <service id=".errored..service_locator.ej.U9CI.App\Entity\Temperature" class="App\Entity\Temperature"/>
     <service id=".errored..service_locator.bPDHAvm.App\Entity\Terrarium" class="App\Entity\Terrarium"/>
     <service id=".errored..service_locator.RU9gbyC.App\Entity\Terrarium" class="App\Entity\Terrarium"/>
     <service id=".console.command.about.lazy" class="Symfony\Component\Console\Command\LazyCommand">
@@ -5163,6 +5493,13 @@
       <argument>Encrypt all local secrets to the vault</argument>
       <argument>false</argument>
       <argument type="service_closure" id="console.command.secrets_encrypt_from_local"/>
+    </service>
+    <service id=".console.command.mailer_test.lazy" class="Symfony\Component\Console\Command\LazyCommand">
+      <argument>mailer:test</argument>
+      <argument type="collection"/>
+      <argument>Test Mailer transports by sending an email</argument>
+      <argument>false</argument>
+      <argument type="service_closure" id="console.command.mailer_test"/>
     </service>
     <service id=".security.command.debug_firewall.lazy" class="Symfony\Component\Console\Command\LazyCommand">
       <argument>debug:firewall</argument>
@@ -5358,7 +5695,7 @@
     </service>
     <service id="console.command_loader" class="Symfony\Component\Console\CommandLoader\ContainerCommandLoader" public="true">
       <tag name="container.no_preload"/>
-      <argument type="service" id=".service_locator.xtdPbZt"/>
+      <argument type="service" id=".service_locator.H1djWMb"/>
       <argument type="collection">
         <argument key="about">console.command.about</argument>
         <argument key="assets:install">console.command.assets_install</argument>
@@ -5387,6 +5724,7 @@
         <argument key="secrets:list">console.command.secrets_list</argument>
         <argument key="secrets:decrypt-to-local">console.command.secrets_decrypt_to_local</argument>
         <argument key="secrets:encrypt-from-local">console.command.secrets_encrypt_from_local</argument>
+        <argument key="mailer:test">console.command.mailer_test</argument>
         <argument key="debug:firewall">security.command.debug_firewall</argument>
         <argument key="security:hash-password">security.command.user_password_hash</argument>
         <argument key="doctrine:database:create">doctrine.database_create_command</argument>
@@ -5423,6 +5761,7 @@
         <argument key="doctrine:migrations:version">doctrine_migrations.version_command</argument>
         <argument key="debug:twig">twig.command.debug</argument>
         <argument key="lint:twig">twig.command.lint</argument>
+        <argument key="reset-password:remove-expired">SymfonyCasts\Bundle\ResetPassword\Command\ResetPasswordRemoveExpiredCommand</argument>
         <argument key="make:auth">maker.auto_command.make_auth</argument>
         <argument key="make:command">maker.auto_command.make_command</argument>
         <argument key="make:twig-component">maker.auto_command.make_twig_component</argument>
@@ -5450,7 +5789,7 @@
         <argument key="make:stimulus-controller">maker.auto_command.make_stimulus_controller</argument>
       </argument>
     </service>
-    <service id=".service_locator.xtdPbZt" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.H1djWMb" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="console.command.about" type="service_closure" id=".console.command.about.lazy"/>
@@ -5480,6 +5819,7 @@
         <argument key="console.command.secrets_list" type="service_closure" id=".console.command.secrets_list.lazy"/>
         <argument key="console.command.secrets_decrypt_to_local" type="service_closure" id=".console.command.secrets_decrypt_to_local.lazy"/>
         <argument key="console.command.secrets_encrypt_from_local" type="service_closure" id=".console.command.secrets_encrypt_from_local.lazy"/>
+        <argument key="console.command.mailer_test" type="service_closure" id=".console.command.mailer_test.lazy"/>
         <argument key="security.command.debug_firewall" type="service_closure" id=".security.command.debug_firewall.lazy"/>
         <argument key="security.command.user_password_hash" type="service_closure" id=".security.command.user_password_hash.lazy"/>
         <argument key="doctrine.database_create_command" type="service_closure" id="doctrine.database_create_command"/>
@@ -5516,6 +5856,7 @@
         <argument key="doctrine_migrations.version_command" type="service_closure" id="doctrine_migrations.version_command"/>
         <argument key="twig.command.debug" type="service_closure" id=".twig.command.debug.lazy"/>
         <argument key="twig.command.lint" type="service_closure" id=".twig.command.lint.lazy"/>
+        <argument key="SymfonyCasts\Bundle\ResetPassword\Command\ResetPasswordRemoveExpiredCommand" type="service_closure" id="SymfonyCasts\Bundle\ResetPassword\Command\ResetPasswordRemoveExpiredCommand"/>
         <argument key="maker.auto_command.make_auth" type="service_closure" id=".maker.auto_command.make_auth.lazy"/>
         <argument key="maker.auto_command.make_command" type="service_closure" id=".maker.auto_command.make_command.lazy"/>
         <argument key="maker.auto_command.make_twig_component" type="service_closure" id=".maker.auto_command.make_twig_component.lazy"/>
@@ -5648,6 +5989,9 @@
     <service id="Psr\Cache\CacheItemPoolInterface" alias="cache.app"/>
     <service id="Symfony\Contracts\Cache\CacheInterface" alias="cache.app"/>
     <service id="Symfony\Contracts\Cache\TagAwareCacheInterface" alias="cache.app.taggable"/>
+    <service id="mailer" alias="mailer.mailer"/>
+    <service id="Symfony\Component\Mailer\MailerInterface" alias="mailer.mailer"/>
+    <service id="Symfony\Component\Mailer\Transport\TransportInterface" alias="mailer.default_transport"/>
     <service id="Symfony\Component\HttpKernel\Debug\FileLinkFormatter" alias="debug.file_link_formatter"/>
     <service id="Symfony\Component\Stopwatch\Stopwatch" alias="debug.stopwatch"/>
     <service id="router" alias="router.default" public="true"/>
@@ -5683,6 +6027,8 @@
     <service id="form.choice_list_factory" alias="form.choice_list_factory.cached"/>
     <service id="Symfony\Component\Validator\Validator\ValidatorInterface" alias="debug.validator"/>
     <service id="validator.mapping.class_metadata_factory" alias="debug.validator"/>
+    <service id="Symfony\Component\Mime\MimeTypesInterface" alias="mime_types"/>
+    <service id="Symfony\Component\Mime\MimeTypeGuesserInterface" alias="mime_types"/>
     <service id="Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface" alias="security.authorization_checker"/>
     <service id="Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface" alias="security.token_storage"/>
     <service id="Symfony\Bundle\SecurityBundle\Security" alias="security.helper"/>
@@ -5725,17 +6071,19 @@
     <service id="doctrine.migrations.metadata_storage" alias="doctrine.migrations.storage.table_storage"/>
     <service id="Twig_Environment" alias="twig"/>
     <service id="Twig\Environment" alias="twig"/>
+    <service id="Symfony\Component\Mime\BodyRendererInterface" alias="twig.mime_body_renderer"/>
+    <service id="SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface" alias="symfonycasts.reset_password.helper"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.7nzbL4K" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.JQSOeJ_"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.q7QosyK"/>
     <service id="doctrine.id_generator_locator" alias=".service_locator.KLVvNIq"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="Psr\Log\LoggerInterface" alias="logger"/>
     <service id=".service_locator.o.uf2zi" alias=".service_locator.7nzbL4K"/>
     <service id=".service_locator.f5QERiz" alias=".service_locator.UUMJOv4"/>
-    <service id=".service_locator.sVHUo0_" alias=".service_locator.JQSOeJ_"/>
+    <service id=".service_locator.3GrdI7f" alias=".service_locator.q7QosyK"/>
     <service id=".service_locator.9XMoc9I" alias=".service_locator.j4nuUXI"/>
-    <service id=".service_locator.KiVXdbN" alias=".service_locator.GsB_JK5"/>
+    <service id=".service_locator.fwlPIsV" alias=".service_locator.B2_7AP9"/>
     <service id=".service_locator.qBCHs1a" alias=".service_locator.QXcJQkF"/>
     <service id=".service_locator.VZoQk0z" alias=".service_locator.CshazM0"/>
     <service id="validator" alias="debug.validator"/>
@@ -5759,8 +6107,16 @@
     <service id="argument_resolver.not_tagged_controller" alias="debug.argument_resolver.not_tagged_controller"/>
     <service id="doctrine.orm.default_metadata_driver" alias=".doctrine.orm.default_metadata_driver"/>
     <service id=".service_locator.gFlme_s" alias=".service_locator.y4_Zrx."/>
+    <service id=".service_locator.RvtjbKo" alias=".service_locator.Ir_uZOH"/>
+    <service id=".service_locator.nsKFqxl" alias=".service_locator.mIwn17T"/>
+    <service id=".service_locator.wZ18H8Y" alias=".service_locator.m_Jm4rm"/>
     <service id=".service_locator.Rq8DF3J" alias=".service_locator.UUMJOv4"/>
+    <service id=".service_locator.OJmnvRJ" alias=".service_locator.uVvF4gL"/>
+    <service id=".service_locator.W47vLMj" alias=".service_locator.Mhqdd2r"/>
     <service id=".service_locator.7NIAq8D" alias=".service_locator.rSTd.nA"/>
+    <service id=".service_locator.pnIVneB" alias=".service_locator.02Gob5Y"/>
+    <service id=".service_locator.p4jFVhd" alias=".service_locator.TZZtJ9x"/>
+    <service id=".service_locator.VhOnWE_" alias=".service_locator.ej.U9CI"/>
     <service id=".service_locator.lw5LQXW" alias=".service_locator.pPXPJTZ"/>
     <service id=".service_locator.EmustB7" alias=".service_locator.bPDHAvm"/>
     <service id=".service_locator.69xd6c9" alias=".service_locator.RU9gbyC"/>

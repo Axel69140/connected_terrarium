@@ -17,17 +17,8 @@ class Terrarium
     #[ORM\Column]
     private ?float $minLuminosityLevel = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $nightHour = null;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $dayHour = null;
-
     #[ORM\Column(length: 255)]
     private ?string $name = null;
-
-    #[ORM\Column]
-    private ?float $specimen = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
@@ -35,6 +26,15 @@ class Terrarium
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Humidity $humidity = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $specimen = null;
+
+    #[ORM\Column(type: Types::TIME_MUTABLE)]
+    private ?\DateTimeInterface $hourDay = null;
+
+    #[ORM\Column(type: Types::TIME_MUTABLE)]
+    private ?\DateTimeInterface $hourNight = null;
 
     public function getId(): ?int
     {
@@ -53,30 +53,6 @@ class Terrarium
         return $this;
     }
 
-    public function getNightHour(): ?\DateTimeInterface
-    {
-        return $this->nightHour;
-    }
-
-    public function setNightHour(\DateTimeInterface $nightHour): self
-    {
-        $this->nightHour = $nightHour;
-
-        return $this;
-    }
-
-    public function getDayHour(): ?\DateTimeInterface
-    {
-        return $this->dayHour;
-    }
-
-    public function setDayHour(\DateTimeInterface $dayHour): self
-    {
-        $this->dayHour = $dayHour;
-
-        return $this;
-    }
-
     public function getName(): ?string
     {
         return $this->name;
@@ -85,18 +61,6 @@ class Terrarium
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getSpecimen(): ?float
-    {
-        return $this->specimen;
-    }
-
-    public function setSpecimen(float $specimen): self
-    {
-        $this->specimen = $specimen;
 
         return $this;
     }
@@ -124,4 +88,41 @@ class Terrarium
 
         return $this;
     }
+
+    public function getSpecimen(): ?string
+    {
+        return $this->specimen;
+    }
+
+    public function setSpecimen(string $specimen): self
+    {
+        $this->specimen = $specimen;
+
+        return $this;
+    }
+
+    public function getHourDay(): ?\DateTimeInterface
+    {
+        return $this->hourDay;
+    }
+
+    public function setHourDay(\DateTimeInterface $hourDay): self
+    {
+        $this->hourDay = $hourDay;
+
+        return $this;
+    }
+
+    public function getHourNight(): ?\DateTimeInterface
+    {
+        return $this->hourNight;
+    }
+
+    public function setHourNight(\DateTimeInterface $hourNight): self
+    {
+        $this->hourNight = $hourNight;
+
+        return $this;
+    }
+
 }

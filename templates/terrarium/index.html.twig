@@ -9,23 +9,21 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>LuminosityLevel</th>
                 <th>MinLuminosityLevel</th>
-                <th>NightHour</th>
-                <th>DayHour</th>
+{#                <th>NightHour</th>#}
+{#                <th>DayHour</th>#}
                 <th>Name</th>
                 <th>Specimen</th>
-                <th>actions</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for terrarium in terraria %}
             <tr>
                 <td>{{ terrarium.id }}</td>
-                <td>{{ terrarium.luminosityLevel }}</td>
                 <td>{{ terrarium.minLuminosityLevel }}</td>
-                <td>{{ terrarium.nightHour ? terrarium.nightHour|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ terrarium.dayHour ? terrarium.dayHour|date('Y-m-d H:i:s') : '' }}</td>
+{#                <td>{{ terrarium.nightHour ? terrarium.nightHour|date('Y-m-d H:i:s') : '' }}</td>#}
+{#                <td>{{ terrarium.dayHour ? terrarium.dayHour|date('Y-m-d H:i:s') : '' }}</td>#}
                 <td>{{ terrarium.name }}</td>
                 <td>{{ terrarium.specimen }}</td>
                 <td>

@@ -1,4 +1,17 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    {{ form_row(form.minLuminosityLevel) }}
+    {{ form_row(form.hourDay) }}
+    {{ form_row(form.hourNight) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.specimen) }}
+
+    {{ form_row(form.temperature.value) }}
+    {{ form_row(form.temperature.nightValue) }}
+    {{ form_row(form.temperature.delta) }}
+
+    {{ form_row(form.humidity.value) }}
+    {{ form_row(form.humidity.nightValue) }}
+    {{ form_row(form.humidity.delta) }}
+
+    {{ form_row(form.submit) }}
 {{ form_end(form) }}

@@ -91,60 +91,48 @@ class __TwigTemplate_55fcbd1c489f56dff0b830ddbfc432e7 extends Template
         <thead>
             <tr>
                 <th>Id</th>
-                <th>LuminosityLevel</th>
                 <th>MinLuminosityLevel</th>
-                <th>NightHour</th>
-                <th>DayHour</th>
-                <th>Name</th>
+";
+        // line 15
+        echo "                <th>Name</th>
                 <th>Specimen</th>
-                <th>actions</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         ";
-        // line 22
+        // line 21
         $context['_parent'] = $context;
-        $context['_seq'] = twig_ensure_traversable((isset($context["terraria"]) || array_key_exists("terraria", $context) ? $context["terraria"] : (function () { throw new RuntimeError('Variable "terraria" does not exist.', 22, $this->source); })()));
+        $context['_seq'] = twig_ensure_traversable((isset($context["terraria"]) || array_key_exists("terraria", $context) ? $context["terraria"] : (function () { throw new RuntimeError('Variable "terraria" does not exist.', 21, $this->source); })()));
         $context['_iterated'] = false;
         foreach ($context['_seq'] as $context["_key"] => $context["terrarium"]) {
-            // line 23
+            // line 22
             echo "            <tr>
                 <td>";
+            // line 23
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["terrarium"], "id", [], "any", false, false, false, 23), "html", null, true);
+            echo "</td>
+                <td>";
             // line 24
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["terrarium"], "id", [], "any", false, false, false, 24), "html", null, true);
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["terrarium"], "minLuminosityLevel", [], "any", false, false, false, 24), "html", null, true);
             echo "</td>
-                <td>";
-            // line 25
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["terrarium"], "luminosityLevel", [], "any", false, false, false, 25), "html", null, true);
-            echo "</td>
-                <td>";
-            // line 26
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["terrarium"], "minLuminosityLevel", [], "any", false, false, false, 26), "html", null, true);
-            echo "</td>
-                <td>";
+";
             // line 27
-            ((twig_get_attribute($this->env, $this->source, $context["terrarium"], "nightHour", [], "any", false, false, false, 27)) ? (print (twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["terrarium"], "nightHour", [], "any", false, false, false, 27), "Y-m-d H:i:s"), "html", null, true))) : (print ("")));
+            echo "                <td>";
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["terrarium"], "name", [], "any", false, false, false, 27), "html", null, true);
             echo "</td>
                 <td>";
             // line 28
-            ((twig_get_attribute($this->env, $this->source, $context["terrarium"], "dayHour", [], "any", false, false, false, 28)) ? (print (twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["terrarium"], "dayHour", [], "any", false, false, false, 28), "Y-m-d H:i:s"), "html", null, true))) : (print ("")));
-            echo "</td>
-                <td>";
-            // line 29
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["terrarium"], "name", [], "any", false, false, false, 29), "html", null, true);
-            echo "</td>
-                <td>";
-            // line 30
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["terrarium"], "specimen", [], "any", false, false, false, 30), "html", null, true);
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["terrarium"], "specimen", [], "any", false, false, false, 28), "html", null, true);
             echo "</td>
                 <td>
                     <a href=\"";
-            // line 32
-            echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_terrarium_show", ["id" => twig_get_attribute($this->env, $this->source, $context["terrarium"], "id", [], "any", false, false, false, 32)]), "html", null, true);
+            // line 30
+            echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_terrarium_show", ["id" => twig_get_attribute($this->env, $this->source, $context["terrarium"], "id", [], "any", false, false, false, 30)]), "html", null, true);
             echo "\">show</a>
                     <a href=\"";
-            // line 33
-            echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_terrarium_edit", ["id" => twig_get_attribute($this->env, $this->source, $context["terrarium"], "id", [], "any", false, false, false, 33)]), "html", null, true);
+            // line 31
+            echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_terrarium_edit", ["id" => twig_get_attribute($this->env, $this->source, $context["terrarium"], "id", [], "any", false, false, false, 31)]), "html", null, true);
             echo "\">edit</a>
                 </td>
             </tr>
@@ -152,7 +140,7 @@ class __TwigTemplate_55fcbd1c489f56dff0b830ddbfc432e7 extends Template
             $context['_iterated'] = true;
         }
         if (!$context['_iterated']) {
-            // line 37
+            // line 35
             echo "            <tr>
                 <td colspan=\"8\">no records found</td>
             </tr>
@@ -161,12 +149,12 @@ class __TwigTemplate_55fcbd1c489f56dff0b830ddbfc432e7 extends Template
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['terrarium'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 41
+        // line 39
         echo "        </tbody>
     </table>
 
     <a href=\"";
-        // line 44
+        // line 42
         echo $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_terrarium_new");
         echo "\">Create new</a>
 ";
@@ -190,7 +178,7 @@ class __TwigTemplate_55fcbd1c489f56dff0b830ddbfc432e7 extends Template
 
     public function getDebugInfo()
     {
-        return array (  170 => 44,  165 => 41,  156 => 37,  147 => 33,  143 => 32,  138 => 30,  134 => 29,  130 => 28,  126 => 27,  122 => 26,  118 => 25,  114 => 24,  111 => 23,  106 => 22,  88 => 6,  78 => 5,  59 => 3,  36 => 1,);
+        return array (  158 => 42,  153 => 39,  144 => 35,  135 => 31,  131 => 30,  126 => 28,  121 => 27,  117 => 24,  113 => 23,  110 => 22,  105 => 21,  97 => 15,  88 => 6,  78 => 5,  59 => 3,  36 => 1,);
     }
 
     public function getSourceContext()
@@ -206,23 +194,21 @@ class __TwigTemplate_55fcbd1c489f56dff0b830ddbfc432e7 extends Template
         <thead>
             <tr>
                 <th>Id</th>
-                <th>LuminosityLevel</th>
                 <th>MinLuminosityLevel</th>
-                <th>NightHour</th>
-                <th>DayHour</th>
+{#                <th>NightHour</th>#}
+{#                <th>DayHour</th>#}
                 <th>Name</th>
                 <th>Specimen</th>
-                <th>actions</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for terrarium in terraria %}
             <tr>
                 <td>{{ terrarium.id }}</td>
-                <td>{{ terrarium.luminosityLevel }}</td>
                 <td>{{ terrarium.minLuminosityLevel }}</td>
-                <td>{{ terrarium.nightHour ? terrarium.nightHour|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ terrarium.dayHour ? terrarium.dayHour|date('Y-m-d H:i:s') : '' }}</td>
+{#                <td>{{ terrarium.nightHour ? terrarium.nightHour|date('Y-m-d H:i:s') : '' }}</td>#}
+{#                <td>{{ terrarium.dayHour ? terrarium.dayHour|date('Y-m-d H:i:s') : '' }}</td>#}
                 <td>{{ terrarium.name }}</td>
                 <td>{{ terrarium.specimen }}</td>
                 <td>
